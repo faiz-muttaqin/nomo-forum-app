@@ -74,7 +74,7 @@ function App() {
           <div className="main-container">
             <div className="row align-items-center p-4 bg-secondary bg-opacity-25 ">
               <div className="col-md-6 d-flex align-items-center gap-3">
-                <img src="/icon.png" style={{ width: '40px', height: '40px' }} />
+                <img src="./icon.png" style={{ width: '40px', height: '40px' }} />
                 <h2 className="text-title">NOMO</h2>
                 <Navigation />
               </div>
