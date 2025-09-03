@@ -13,6 +13,9 @@ export default defineConfig([
         version: '18.0',
       },
     },
+    rules: {
+      indent: 'off',
+    },
   },
   pluginReact.configs.flat.recommended,
   daStyle,

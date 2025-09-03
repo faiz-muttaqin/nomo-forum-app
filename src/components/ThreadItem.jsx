@@ -309,16 +309,15 @@ function ThreadItem({
                 </div>
                 <div className="d-flex mt-2">
                   <button
-                    className={
-                      `btn btn-sm me-2 bg-opacity-25 ${
-                        theme === 'dark'
-                          ? comment.upVotesBy.includes(authUser?.id)
-                            ? ' bg-primary text-primary'
-                            : 'bg-secondary text-light'
-                          : comment.upVotesBy.includes(authUser?.id)
-                            ? ' bg-primary text-primary'
-                            : 'bg-secondary text-dark'}`
-                    }
+                    className={`btn btn-sm me-2 bg-opacity-25 ${
+                      theme === 'dark'
+                        ? comment.upVotesBy.includes(authUser?.id)
+                          ? ' bg-primary text-primary'
+                          : 'bg-secondary text-light'
+                        : comment.upVotesBy.includes(authUser?.id)
+                          ? ' bg-primary text-primary'
+                          : 'bg-secondary text-dark'
+                    }`}
                     onClick={() =>
                       handleCommentUpvote(comment.id, comment.upVotesBy.includes(authUser?.id))
                     }
@@ -326,16 +325,15 @@ function ThreadItem({
                     <TbArrowBigUp /> {comment.upVotesBy.length}
                   </button>
                   <button
-                    className={
-                      `btn btn-sm ${navLinkClass}${
-                        theme === 'dark'
-                          ? comment.downVotesBy.includes(authUser?.id)
-                            ? ' bg-danger text-danger'
-                            : 'bg-secondary text-light'
-                          : comment.downVotesBy.includes(authUser?.id)
-                            ? ' bg-danger text-danger'
-                            : 'bg-secondary text-dark'}`
-                    }
+                    className={`btn btn-sm ${navLinkClass}${
+                      theme === 'dark'
+                        ? comment.downVotesBy.includes(authUser?.id)
+                          ? ' bg-danger text-danger'
+                          : 'bg-secondary text-light'
+                        : comment.downVotesBy.includes(authUser?.id)
+                          ? ' bg-danger text-danger'
+                          : 'bg-secondary text-dark'
+                    }`}
                     onClick={() =>
                       handleCommentDownvote(comment.id, comment.downVotesBy.includes(authUser?.id))
                     }

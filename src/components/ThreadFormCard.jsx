@@ -97,7 +97,7 @@ function ThreadFormCard() {
           {!isExpanded ? (
             <input
               type="text"
-              className={`${inputClass  } flex-grow-1`}
+              className={`${inputClass} flex-grow-1`}
               placeholder={t.fill || 'Isi catatan...'}
               style={{ minWidth: 0 }}
               onClick={handleClick}

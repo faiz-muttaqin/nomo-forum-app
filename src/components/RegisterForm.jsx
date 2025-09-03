@@ -29,7 +29,7 @@ export default function RegisterForm({ onRegister }) {
       setSuccess('Register success! You can now login.');
       if (onRegister) onRegister();
     } else {
-      setError(`Register failed! Please try again.${  result.message || ''}`);
+      setError(`Register failed! Please try again.${result.message || ''}`);
     }
     setLoading(false);
   };
