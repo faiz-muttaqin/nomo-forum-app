@@ -53,7 +53,7 @@ export default function LoginForm() {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary-orange w-100" disabled={loading}>
+        <button type="submit" id="loginSubmitButton" className="btn btn-primary-orange w-100" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>

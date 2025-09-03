@@ -106,6 +106,7 @@ function ThreadFormCard() {
           ) : (
             <div className="flex-grow-1 d-flex flex-column gap-2 pb-3">
               <input
+                id="threadTitle"
                 type="text"
                 className={inputClass}
                 value={title}
@@ -116,6 +117,7 @@ function ThreadFormCard() {
                 disabled={isLoading}
               />
               <textarea
+                id="threadFill"
                 className={inputClass}
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
@@ -126,6 +128,7 @@ function ThreadFormCard() {
               />
               <div className="position-relative">
                 <input
+                  id="threadCategory"
                   type="text"
                   className={inputClass}
                   value={category}
@@ -145,6 +148,7 @@ function ThreadFormCard() {
           {isExpanded ? (
             <div className="d-flex flex-column gap-2">
               <button
+                id="threadPublish"
                 type="submit"
                 className="btn btn-primary-orange"
                 style={{ whiteSpace: 'nowrap', minWidth: 150 }}
@@ -167,6 +171,7 @@ function ThreadFormCard() {
               className="btn btn-primary-orange"
               style={{ whiteSpace: 'nowrap', minWidth: 150 }}
               onClick={handleClick}
+              id="dummyButtonInput"
             >
               {t.post}
             </button>

@@ -3,6 +3,7 @@ import globals from 'globals';
 import pluginReact from 'eslint-plugin-react';
 import { defineConfig } from 'eslint/config';
 import daStyle from 'eslint-config-dicodingacademy';
+import pluginCypress from 'eslint-plugin-cypress/flat';
 export default defineConfig([
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
@@ -17,6 +18,7 @@ export default defineConfig([
       indent: 'off',
     },
   },
+  pluginCypress.configs.recommended,
   pluginReact.configs.flat.recommended,
   daStyle,
 ]);

@@ -86,7 +86,7 @@ function App() {
                 {authUser ? (
                   <BtnLoggedIn authUser={authUser} />
                 ) : (
-                  <button className="btn btn-primary-orange" onClick={() => handleAuthModal(true)}>
+                  <button id="loginButton" className="btn btn-primary-orange" onClick={() => handleAuthModal(true)}>
                     Login
                   </button>
                 )}
