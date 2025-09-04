@@ -42,7 +42,7 @@ export function asyncPopulateThreads() {
       dispatch(recieveThreadsActionCreator(threadsWithDetails));
       setCachedThreads(threadsWithDetails);
     } catch (error) {
-      // console.log(error.message);
+      console.log(error.message);
     }
   };
 }
