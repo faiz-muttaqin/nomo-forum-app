@@ -5,7 +5,7 @@ import ThemeContext from '../contexts/ThemeContext'; // Make sure this import pa
 import { asyncPopulateLeaderBoards } from '../states/shared/action';
 
 function LeaderboardPage({ keyword }) {
-  const { leaderboards = [] } = useSelector((states) => states);
+  const leaderboards = useSelector((states) => states.leaderboards);
   const { theme } = useContext(ThemeContext);
   const dispatch = useDispatch();
   useEffect(() => {

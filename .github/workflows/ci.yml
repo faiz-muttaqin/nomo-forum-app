@@ -22,4 +22,5 @@ jobs:
       - name: pnpm install and test
         run: |
           pnpm install
+          pnpx cypress install
           pnpm run ci:test
