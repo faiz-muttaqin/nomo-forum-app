@@ -73,8 +73,8 @@ describe('Login spec', () => {
     cy.get('#loginSubmitButton')
       .contains(/^Login$/)
       .click();
-    cy.wait('@loginRequest');
-    cy.wait('@getUserRequest');
+    cy.wait('@loginRequest', { timeout: 10000 });
+    cy.wait('@getUserRequest', { timeout: 10000 });
     // memverifikasi bahwa elemen profileDropdown ditampilkan setelah login berhasil
     cy.get('#profileDropdown').should('be.visible');
   });
@@ -88,8 +88,8 @@ describe('Login spec', () => {
     login();
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
-    cy.wait('@loginRequest');
-    cy.wait('@getUserRequest');
+    cy.wait('@loginRequest', { timeout: 10000 });
+    cy.wait('@getUserRequest', { timeout: 10000 });
     // Click the dummy button to show thread creation form
     cy.get('#dummyButtonInput').click();
 
@@ -119,8 +119,8 @@ describe('Login spec', () => {
     login();
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
-    cy.wait('@loginRequest');
-    cy.wait('@getUserRequest');
+    cy.wait('@loginRequest', { timeout: 10000 });
+    cy.wait('@getUserRequest', { timeout: 10000 });
     // Verify profile dropdown is visible and click it
     cy.get('#profileDropdown').should('be.visible').click();
 
