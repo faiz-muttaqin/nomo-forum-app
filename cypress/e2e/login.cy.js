@@ -66,6 +66,7 @@ describe('Login spec', () => {
 
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
+    // Set up interceptors before clicking the button
     cy.intercept('POST', '**/login').as('loginRequest');
     cy.intercept('GET', '**/users/me').as('getUserRequest');
 
@@ -73,10 +74,12 @@ describe('Login spec', () => {
     cy.get('#loginSubmitButton')
       .contains(/^Login$/)
       .click();
-    cy.wait('@loginRequest', { timeout: 10000 });
+
+    // Wait for the intercepted requests after clicking
+    cy.wait('@loginRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);;
     cy.wait('@getUserRequest', { timeout: 10000 });
     // memverifikasi bahwa elemen profileDropdown ditampilkan setelah login berhasil
-    cy.get('#profileDropdown').should('be.visible');
+    cy.get('#profileDropdown', { timeout: 10000 }).should('be.visible');
   });
 
   it('should create a new thread when dummy button is clicked', () => {
@@ -88,7 +91,7 @@ describe('Login spec', () => {
     login();
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
-    cy.wait('@loginRequest', { timeout: 10000 });
+    cy.wait('@loginRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);;
     cy.wait('@getUserRequest', { timeout: 10000 });
     // Click the dummy button to show thread creation form
     cy.get('#dummyButtonInput').click();
@@ -119,13 +122,13 @@ describe('Login spec', () => {
     login();
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
-    cy.wait('@loginRequest', { timeout: 10000 });
+    cy.wait('@loginRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);;
     cy.wait('@getUserRequest', { timeout: 10000 });
     // Verify profile dropdown is visible and click it
-    cy.get('#profileDropdown').should('be.visible').click();
+    cy.get('#profileDropdown', { timeout: 10000 }).should('be.visible').click();
 
     // Find and click the logout button in the dropdown
-    cy.get('.dropdown-item.text-danger').contains('Logout').should('be.visible').click();
+    cy.get('#logoutButton').should('be.visible').click();
 
     // Verify that after logout, the login button is visible again
     cy.get('#loginButton').should('be.visible');
