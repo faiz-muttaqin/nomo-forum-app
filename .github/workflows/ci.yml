@@ -7,8 +7,11 @@ on:
  
 jobs:
   automation-test-job:
+    name: automation-test-job
     runs-on: ubuntu-latest
- 
+    strategy:
+      matrix:
+        node-version: [22.x]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -20,4 +23,5 @@ jobs:
       - name: pnpm install and test
         run: |
           pnpm install
+          pnpx cypress install
           pnpm run ci:test

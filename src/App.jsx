@@ -18,7 +18,8 @@ import UserDetail from './pages/UserDetail';
 import { setAuthModalActionCreator } from './states/authModal/action';
 
 function App() {
-  const { authUser = null, authModal = false } = useSelector((states) => states);
+  const authUser = useSelector((state) => state.authUser);
+  const authModal = useSelector((state) => state.authModal);
   const dispatch = useDispatch();
   const handleAuthModal = (value) => {
     dispatch(setAuthModalActionCreator(value));
@@ -86,7 +87,11 @@ function App() {
                 {authUser ? (
                   <BtnLoggedIn authUser={authUser} />
                 ) : (
-                  <button id="loginButton" className="btn btn-primary-orange" onClick={() => handleAuthModal(true)}>
+                  <button
+                    id="loginButton"
+                    className="btn btn-primary-orange"
+                    onClick={() => handleAuthModal(true)}
+                  >
                     Login
                   </button>
                 )}
