@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthModalActionCreator } from '../states/authModal/action';
 import { asyncAddThread } from '../states/threads/action';
 function ThreadFormCard() {
-  const { authUser = null } = useSelector((states) => states);
+  const authUser = useSelector((state) => state.authUser);
   const dispatch = useDispatch();
   const { theme } = useContext(ThemeContext);
   const { language } = useContext(LanguageContext);

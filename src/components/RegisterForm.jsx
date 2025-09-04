@@ -11,8 +11,6 @@ export default function RegisterForm({ onRegister }) {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // const { authUser = null } = useSelector((state) => state);
-
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {

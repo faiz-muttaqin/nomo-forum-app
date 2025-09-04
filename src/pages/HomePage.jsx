@@ -6,14 +6,14 @@ import ThreadList from '../components/ThreadList';
 import ThreadFormCard from '../components/ThreadFormCard';
 
 function HomePage({ keyword }) {
-  const { threads = [] } = useSelector((states) => states);
+  const threads = useSelector((states) => states.threads);
   const filteredThreads = keyword
     ? threads.filter(
-        (thread) =>
-          thread.title.toLowerCase().includes(keyword.toLowerCase()) ||
+      (thread) =>
+        thread.title.toLowerCase().includes(keyword.toLowerCase()) ||
           thread.body.toLowerCase().includes(keyword.toLowerCase()) ||
           thread.category.toLowerCase().includes(keyword.toLowerCase())
-      )
+    )
     : threads;
   return (
     <section className="container">

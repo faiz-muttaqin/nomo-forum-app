@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { FiLogIn } from 'react-icons/fi';
 import { setAuthModalActionCreator } from '../states/authModal/action';
 const UserDetail = () => {
-  const { authUser = null } = useSelector((states) => states);
+  const authUser = useSelector((states) => states.authUser);
   const dispatch = useDispatch();
   const handleAuthModal = () => {
     if (!authUser) {
