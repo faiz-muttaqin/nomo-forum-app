@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { asyncUnsetAuthUser } from '../states/authUser/action';
 import { asyncPopulateThreads } from '../states/shared/action';
 import PropTypes from 'prop-types';
+import BtnMotion from './BtnMotion';
 export default function BtnLoggedIn({ authUser = null }) {
   const dispatch = useDispatch();
   const handleAuthLogOut = () => {
@@ -14,7 +15,7 @@ export default function BtnLoggedIn({ authUser = null }) {
   return (
     <div className="dropdown">
       {authUser ? (
-        <button
+        <BtnMotion
           className="flex-shrink-0 rounded-circle border-0"
           type="button"
           id="profileDropdown"
@@ -28,9 +29,9 @@ export default function BtnLoggedIn({ authUser = null }) {
             title={authUser.name}
             style={{ height: '36px' }}
           />
-        </button>
+        </BtnMotion>
       ) : (
-        <button
+        <BtnMotion
           className="btn rounded-circle"
           type="button"
           id="profileDropdown"
@@ -38,7 +39,7 @@ export default function BtnLoggedIn({ authUser = null }) {
           aria-expanded="false"
         >
           <IoPersonCircleOutline />
-        </button>
+        </BtnMotion>
       )}
 
       <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
@@ -50,10 +51,10 @@ export default function BtnLoggedIn({ authUser = null }) {
           <hr className="dropdown-divider" />
         </li>
         <li>
-          <button className="dropdown-item text-danger" id='logoutButton' onClick={handleAuthLogOut}>
+          <BtnMotion className="dropdown-item text-danger" id='logoutButton' onClick={handleAuthLogOut}>
             <BsBoxArrowRight />
             {' Logout'}
-          </button>
+          </BtnMotion>
         </li>
       </ul>
     </div>

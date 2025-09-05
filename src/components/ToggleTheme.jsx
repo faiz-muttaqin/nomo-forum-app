@@ -1,13 +1,13 @@
 import React from 'react';
 import { ThemeConsumer } from '../contexts/ThemeContext';
 import { FaMoon, FaSun } from 'react-icons/fa';
-
+import BtnMotion from './BtnMotion';
 function ToggleTheme() {
   return (
     <ThemeConsumer>
       {({ theme, toggleTheme }) => {
         return (
-          <button
+          <BtnMotion
             className={`btn btn-${theme === 'light' ? 'dark' : 'light'} btn-sm me-2`}
             onClick={toggleTheme}
             title="Ganti tema"
@@ -21,7 +21,7 @@ function ToggleTheme() {
                 <FaSun />
               </span>
             )}
-          </button>
+          </BtnMotion>
         );
       }}
     </ThemeConsumer>

@@ -19,6 +19,12 @@ body {
   border-color: #ff6934;
 }
 
+.btn-primary-orange:hover {
+  color: #fff;
+  background-color: #ff6934;
+  border-color: #ff6934;
+}
+
 .text-title {
   font-size: 1.5rem;
   font-weight: 600;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAuthModalActionCreator } from '../states/authModal/action';
 import { asyncSetAuthUser } from '../states/authUser/action';
+import BtnMotion from './BtnMotion';
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,9 +54,9 @@ export default function LoginForm() {
             required
           />
         </div>
-        <button type="submit" id="loginSubmitButton" className="btn btn-primary-orange w-100" disabled={loading}>
+        <BtnMotion type="submit" id="loginSubmitButton" className="btn btn-primary-orange w-100" disabled={loading}>
           {loading ? 'Logging in...' : 'Login'}
-        </button>
+        </BtnMotion>
       </form>
     </div>
   );
