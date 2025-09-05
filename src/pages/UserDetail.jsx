@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { FiLogIn } from 'react-icons/fi';
 import { setAuthModalActionCreator } from '../states/authModal/action';
+import BtnMotion from '../components/BtnMotion';
 const UserDetail = () => {
   const authUser = useSelector((states) => states.authUser);
   const dispatch = useDispatch();
@@ -18,13 +19,13 @@ const UserDetail = () => {
             <h2 className="card-title text-center mb-4">User Profile</h2>
             <div className="text-center mb-4">
               <p className="text-muted mb-4">Please log in to view your profile details.</p>
-              <button
+              <BtnMotion
                 className="btn btn-primary-orange d-inline-flex align-items-center"
                 onClick={handleAuthModal}
               >
                 <FiLogIn className="me-2" />
                 Log In
-              </button>
+              </BtnMotion>
             </div>
           </div>
         </div>

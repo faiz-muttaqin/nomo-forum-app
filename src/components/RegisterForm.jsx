@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { asyncRegisterUser } from '../states/users/action';
 import PropTypes from 'prop-types';
+import BtnMotion from './BtnMotion';
 
 export default function RegisterForm({ onRegister }) {
   const [name, setName] = useState('');
@@ -78,9 +79,9 @@ export default function RegisterForm({ onRegister }) {
             required
           />
         </div>
-        <button type="submit" className="btn btn-warning w-100 mb-3" disabled={loading}>
+        <BtnMotion type="submit" className="btn btn-warning w-100 mb-3" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
-        </button>
+        </BtnMotion>
       </form>
     </div>
   );

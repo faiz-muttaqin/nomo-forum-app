@@ -24,4 +24,5 @@ jobs:
         run: |
           pnpm install
           pnpx cypress install
+          pnpm exec playwright install
           pnpm run ci:test

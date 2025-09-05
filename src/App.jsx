@@ -12,6 +12,7 @@ import ToggleTheme from './components/ToggleTheme';
 import BtnLanguage from './components/BtnLanguage';
 import BtnLoggedIn from './components/BtnLoggedIn';
 import AuthModal from './components/AuthModal';
+import BtnMotion from './components/BtnMotion';
 import HomePage from './pages/HomePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import UserDetail from './pages/UserDetail';
@@ -87,13 +88,13 @@ function App() {
                 {authUser ? (
                   <BtnLoggedIn authUser={authUser} />
                 ) : (
-                  <button
+                  <BtnMotion
                     id="loginButton"
                     className="btn btn-primary-orange"
                     onClick={() => handleAuthModal(true)}
                   >
                     Login
-                  </button>
+                  </BtnMotion>
                 )}
               </div>
             </div>

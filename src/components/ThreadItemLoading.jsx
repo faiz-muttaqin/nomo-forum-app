@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import ThemeContext from '../contexts/ThemeContext';
-
+import BtnMotion from './BtnMotion';
 export default function ThreadItemLoading() {
   const { theme } = useContext(ThemeContext);
   const cardClass =
@@ -70,7 +70,7 @@ export default function ThreadItemLoading() {
         {/* Action buttons */}
         <div className="btn-group" role="group" aria-label="React Actions">
           {[1, 2, 3].map((i) => (
-            <button
+            <BtnMotion
               key={i}
               className={`btn d-flex align-items-center gap-2 ${navLinkClass} disabled`}
               disabled
@@ -84,7 +84,7 @@ export default function ThreadItemLoading() {
                 className="placeholder rounded"
                 style={{ width: 30, height: 16, display: 'inline-block' }}
               />
-            </button>
+            </BtnMotion>
           ))}
         </div>
       </div>

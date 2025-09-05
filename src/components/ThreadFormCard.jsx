@@ -4,6 +4,7 @@ import LanguageContext, { translations } from '../contexts/LanguageContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthModalActionCreator } from '../states/authModal/action';
 import { asyncAddThread } from '../states/threads/action';
+import BtnMotion from './BtnMotion';
 function ThreadFormCard() {
   const authUser = useSelector((state) => state.authUser);
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ function ThreadFormCard() {
           {/* Button section */}
           {isExpanded ? (
             <div className="d-flex flex-column gap-2">
-              <button
+              <BtnMotion
                 id="threadPublish"
                 type="submit"
                 className="btn btn-primary-orange"
@@ -155,18 +156,18 @@ function ThreadFormCard() {
                 disabled={isLoading}
               >
                 {isLoading ? t.loading || 'Posting...' : t.post}
-              </button>
-              <button
+              </BtnMotion>
+              <BtnMotion
                 type="button"
                 className="btn btn-outline-secondary"
                 onClick={() => setIsExpanded(false)}
                 disabled={isLoading}
               >
                 {t.cancel || 'Cancel'}
-              </button>
+              </BtnMotion>
             </div>
           ) : (
-            <button
+            <BtnMotion
               type="button"
               className="btn btn-primary-orange"
               style={{ whiteSpace: 'nowrap', minWidth: 150 }}
@@ -174,7 +175,7 @@ function ThreadFormCard() {
               id="dummyButtonInput"
             >
               {t.post}
-            </button>
+            </BtnMotion>
           )}
         </div>
       </form>

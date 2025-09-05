@@ -19,6 +19,7 @@ import {
   asyncNeutralVoteComment,
 } from '../states/threads/action';
 import { IoIosSend } from 'react-icons/io';
+import BtnMotion from './BtnMotion';
 function ThreadItem({
   id,
   body,
@@ -223,26 +224,26 @@ function ThreadItem({
           ))}
         </div>
         <div className="btn-group" role="group" aria-label="React Actions">
-          <button
+          <BtnMotion
             onClick={handleUpvote}
             className={`btn d-flex align-items-center gap-2 ${upVoteClass}`}
           >
             <TbArrowBigUp /> {t.upvote} • {upVoteTotal}
-          </button>
-          <button
+          </BtnMotion>
+          <BtnMotion
             onClick={handleDownvote}
             className={`btn d-flex align-items-center gap-2 ${downVoteClass}`}
             disabled={disableVote}
           >
             <TbArrowBigDown /> {t.downvote} • {downVoteTotal}
-          </button>
-          <button
+          </BtnMotion>
+          <BtnMotion
             onClick={handleShowComment}
             className={`btn d-flex align-items-center gap-2 ${navLinkClass}`}
             disabled={disableVote}
           >
             <FiMessageSquare /> : {totalComments}
-          </button>
+          </BtnMotion>
         </div>
       </div>
       {/* Comments Section */}
@@ -272,14 +273,14 @@ function ThreadItem({
                       value={commentContent}
                       onChange={handleCommentChange}
                     />
-                    <button
+                    <BtnMotion
                       className={`border-0 btn ${theme === 'dark' ? 'btn-light' : 'btn-dark'}`}
                       type="button"
                       onClick={handleCommentSubmit}
                       disabled={isSubmittingComment || !commentContent.trim()}
                     >
                       <IoIosSend />
-                    </button>
+                    </BtnMotion>
                   </div>
                 </div>
               </>
@@ -308,7 +309,7 @@ function ThreadItem({
                   {isString(comment.content) === -1 ? comment.content : parse(comment.content)}
                 </div>
                 <div className="d-flex mt-2">
-                  <button
+                  <BtnMotion
                     className={`btn btn-sm me-2 bg-opacity-25 ${
                       theme === 'dark'
                         ? comment.upVotesBy.includes(authUser?.id)
@@ -323,8 +324,8 @@ function ThreadItem({
                     }
                   >
                     <TbArrowBigUp /> {comment.upVotesBy.length}
-                  </button>
-                  <button
+                  </BtnMotion>
+                  <BtnMotion
                     className={`btn btn-sm ${navLinkClass}${
                       theme === 'dark'
                         ? comment.downVotesBy.includes(authUser?.id)
@@ -339,7 +340,7 @@ function ThreadItem({
                     }
                   >
                     <TbArrowBigDown /> {comment.downVotesBy.length}
-                  </button>
+                  </BtnMotion>
                 </div>
               </div>
             ))
