@@ -56,33 +56,8 @@ describe('Login spec', () => {
       .should('be.visible');
   });
 
-  it('should display profile dropdown when logging in with specific user', () => {
-    cy.get('#loginButton').should('be.visible').click();
-    // mengisi username dengan email yang ditentukan
-    cy.get('#email').type('faiz@gmail.com');
 
-    // mengisi password yang ditentukan
-    cy.get('#password').type('P@ssw0rd');
-
-    // Wait for the API responses and UI to update by asserting on network requests
-    // or by waiting for the profileDropdown to be visible
-    // Set up interceptors before clicking the button
-    cy.intercept('POST', '**/login').as('loginRequest');
-    cy.intercept('GET', '**/users/me').as('getUserRequest');
-
-    // menekan tombol Login
-    cy.get('#loginSubmitButton')
-      .contains(/^Login$/)
-      .click();
-
-    // Wait for the intercepted requests after clicking
-    cy.wait('@loginRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);;
-    cy.wait('@getUserRequest', { timeout: 10000 });
-    // memverifikasi bahwa elemen profileDropdown ditampilkan setelah login berhasil
-    cy.get('#profileDropdown', { timeout: 10000 }).should('be.visible');
-  });
-
-  it('should create a new thread when dummy button is clicked', () => {
+  it('should display profile dropdown after login and create a new thread then logout', () => {
     // Wait for the API responses and UI to update by asserting on network requests
     // or by waiting for the profileDropdown to be visible
     cy.intercept('POST', '**/login').as('loginRequest');
@@ -111,20 +86,7 @@ describe('Login spec', () => {
 
     // Verify the thread was published successfully
     cy.contains('Test Thread Title').should('be.visible');
-  });
 
-  it('should logout successfully when clicking logout button', () => {
-    // Wait for the API responses and UI to update by asserting on network requests
-    // or by waiting for the profileDropdown to be visible
-    cy.intercept('POST', '**/login').as('loginRequest');
-    cy.intercept('GET', '**/users/me').as('getUserRequest');
-    // Login first
-    login();
-    // Wait for the API responses and UI to update by asserting on network requests
-    // or by waiting for the profileDropdown to be visible
-    cy.wait('@loginRequest', { timeout: 10000 }).its('response.statusCode').should('eq', 200);;
-    cy.wait('@getUserRequest', { timeout: 10000 });
-    // Verify profile dropdown is visible and click it
     cy.get('#profileDropdown', { timeout: 10000 }).should('be.visible').click();
 
     // Find and click the logout button in the dropdown
