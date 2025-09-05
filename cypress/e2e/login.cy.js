@@ -86,7 +86,7 @@ describe('Login spec', () => {
 
     // Verify the thread was published successfully
     cy.contains('Test Thread Title').should('be.visible');
-
+    cy.wait(3000); // Wait for 3 seconds to ensure the thread is created before logging out
     cy.get('#profileDropdown', { timeout: 10000 }).should('be.visible').click();
 
     // Find and click the logout button in the dropdown
