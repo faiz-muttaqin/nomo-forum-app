@@ -12,6 +12,7 @@ export default function BtnLanguage() {
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            data-testid="toggleLanguage"
           >
             {LANGUAGES.find((l) => l.code === language)
               ?.code?.slice(0, 2)

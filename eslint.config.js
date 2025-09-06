@@ -1,6 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from "eslint-plugin-storybook";
-
 import js from '@eslint/js';
 import globals from 'globals';
 import pluginReact from 'eslint-plugin-react';
@@ -19,10 +16,9 @@ export default defineConfig([
     },
     rules: {
       indent: 'off',
-      'linebreak-style': 'off',
     },
   },
   pluginCypress.configs.recommended,
   pluginReact.configs.flat.recommended,
-  // daStyle,
+  daStyle,
 ]);

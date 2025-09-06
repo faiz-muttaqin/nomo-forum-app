@@ -32,7 +32,7 @@ function ThreadItem({
   comments = [],
   user,
 }) {
-  const authUser= useSelector((states) => states.authUser);
+  const authUser = useSelector((states) => states.authUser);
   const dispatch = useDispatch();
   const [showComments, setShowComments] = useState(false);
   const { theme } = useContext(ThemeContext);
