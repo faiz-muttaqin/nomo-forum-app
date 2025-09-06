@@ -54,7 +54,13 @@ export default function LoginForm() {
             required
           />
         </div>
-        <BtnMotion type="submit" id="loginSubmitButton" className="btn btn-primary-orange w-100" disabled={loading}>
+        <BtnMotion
+          type="submit"
+          id="loginSubmitButton"
+          className="btn btn-primary-orange w-100"
+          data-testid="loginSubmitButton"
+          disabled={loading}
+        >
           {loading ? 'Logging in...' : 'Login'}
         </BtnMotion>
       </form>

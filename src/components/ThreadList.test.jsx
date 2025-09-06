@@ -1,13 +1,3 @@
-/**
- * skenario testing
- *
- * - ThreadList component
- *   - should render loading skeletons when threads is empty
- *   - should render threads when threads is not empty
- * - ThreadItem component
- *   - should render thread item with correct props
- */
-
 import React from 'react';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';

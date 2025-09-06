@@ -51,7 +51,11 @@ export default function BtnLoggedIn({ authUser = null }) {
           <hr className="dropdown-divider" />
         </li>
         <li>
-          <BtnMotion className="dropdown-item text-danger" id='logoutButton' onClick={handleAuthLogOut}>
+          <BtnMotion
+            className="dropdown-item text-danger"
+            id="logoutButton"
+            onClick={handleAuthLogOut}
+          >
             <BsBoxArrowRight />
             {' Logout'}
           </BtnMotion>
