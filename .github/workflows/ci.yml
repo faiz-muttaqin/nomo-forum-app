@@ -25,9 +25,11 @@ jobs:
         with:
           path: ~/.cache/Cypress
           key: cypress-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - name: pnpm install and test
-        run: |
-          pnpm install
-          pnpx cypress install
-          pnpm exec playwright install
-          pnpm run ci:test
+      - name: Install dependencies
+        run: pnpm install
+      - name: Install Cypress binary
+        run: pnpx cypress install
+      - name: List Cypress cache
+        run: ls -R ~/.cache/Cypress
+      - name: Run tests
+        run: pnpm run ci:test
