@@ -122,7 +122,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("Database setup failed: %v", err)
 	}
-	AutoMigrateDB(DB)
+	// AutoMigrateDB(DB)
 
 	R = gin.Default()
 	R.Use(cors.New(cors.Config{
