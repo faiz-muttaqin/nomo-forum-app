@@ -1625,12 +1625,13 @@ func InitSqlLiteDB(dbFilePath string) (*gorm.DB, error) {
 		dsn = "file::memory:?cache=shared"
 	} else {
 		if _, err := os.Stat(dbFilePath); os.IsNotExist(err) {
-			file, err := os.Create(dbFilePath)
+			file, err := os.OpenFile(dbFilePath, os.O_CREATE|os.O_WRONLY, 0777)
 			if err != nil {
 				logrus.Error(err)
-				return nil, err
+				dsn = dbFilePath
+			} else {
+				file.Close()
 			}
-			file.Close()
 		}
 		dsn = dbFilePath
 	}
