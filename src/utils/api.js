@@ -1,5 +1,7 @@
 const api = (() => {
-  const BASE_URL = 'https://forum-api.dicoding.dev/v1';
+  // const BASE_URL = 'https://forum-api.dicoding.dev/v1';
+  const BASE_URL = 'https://nomo-forum-app.apn.leapcell.app';
+  // const BASE_URL = 'http://localhost:8080';
 
   function putAccessToken(token) {
     localStorage.setItem('accessToken', token);
@@ -21,8 +23,10 @@ const api = (() => {
   }
 
   async function _fetchWithAuth(url, options = {}) {
+    const method = options.method ? options.method : 'GET';
     return fetch(url, {
       ...options,
+      method,
       headers: {
         ...options.headers,
         Authorization: `Bearer ${getAccessToken()}`,
@@ -74,7 +78,13 @@ const api = (() => {
 
   // Get own profile
   async function getOwnProfile() {
-    const response = await _fetchWithAuth(`${BASE_URL}/users/me`);
+    console.log('getOwnProfile called');
+    const response = await _fetchWithAuth(`${BASE_URL}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     const responseJson = await response.json();
     if (responseJson.status !== 'success') {
       throw new Error(responseJson.message);
