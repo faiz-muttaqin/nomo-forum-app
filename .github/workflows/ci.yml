@@ -20,6 +20,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install pnpm
         run: npm install -g pnpm
+      - name: Cache Cypress
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
       - name: pnpm install and test
         run: |
           pnpm install
