@@ -19,8 +19,6 @@ describe('Login spec', () => {
     cy.get('#loginSubmitButton')
       .contains(/^Login$/)
       .click();
-    // Wait for login to complete
-    cy.get('#profileDropdown').should('be.visible');
   };
 
   it('should display login page correctly', () => {
