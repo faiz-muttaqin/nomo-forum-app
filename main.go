@@ -112,8 +112,8 @@ func AutoMigrateDB(db *gorm.DB) {
 }
 func main() {
 	var err error
-	// if DB, err = InitSqlLiteDB("sqlite.db"); err != nil {
-	if DB, err = InitSqlLiteDB(""); err != nil {
+	if DB, err = InitSqlLiteDB("sqlite.db"); err != nil {
+		// if DB, err = InitSqlLiteDB(""); err != nil {
 		logrus.Fatalf("Database setup failed: %v", err)
 	}
 	AutoMigrateDB(DB)
