@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -8,10 +9,10 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-	_ "modernc.org/sqlite"
 )
 
 var DB *gorm.DB
@@ -112,9 +113,13 @@ func AutoMigrateDB(db *gorm.DB) {
 	}
 }
 func main() {
+	// Load environment variables using godotenv
+	_ = godotenv.Load()
+	dbDsn := os.Getenv("DB_PATH")
+
 	var err error
-	if DB, err = InitSqlLiteDB(""); err != nil {
-		// if DB, err = InitSqlLiteDB(""); err != nil {
+	DB, err = InitPostgreSqlDB(dbDsn)
+	if err != nil {
 		logrus.Fatalf("Database setup failed: %v", err)
 	}
 	AutoMigrateDB(DB)
@@ -159,8 +164,7 @@ func main() {
 	// Leaderboard
 	R.GET("/leaderboards", GetLeaderboardsHandler)
 
-	R.Run() // listen and serve on 8080
-
+	R.Run() // listen and serve on specified port
 }
 
 // Example handler: Register
@@ -1619,28 +1623,14 @@ func GetLeaderboardsHandler(c *gin.Context) {
 	})
 }
 
-// InitSqlLiteDB initializes and returns a SQLite database connection using gorm
-func InitSqlLiteDB(dbFilePath string) (*gorm.DB, error) {
-	var dsn string
-	if dbFilePath == "" {
-		dsn = "file::memory:?cache=shared"
-	} else {
-		if _, err := os.Stat(dbFilePath); os.IsNotExist(err) {
-			file, err := os.OpenFile(dbFilePath, os.O_CREATE|os.O_WRONLY, 0777)
-			if err != nil {
-				logrus.Error(err)
-				dsn = dbFilePath
-			} else {
-				file.Close()
-			}
-		}
-		dsn = dbFilePath
-	}
-
-	db, err := gorm.Open(sqlite.Open(dsn), &gorm.Config{})
+// InitPostgreSqlDB initializes and checks the PostgreSQL database connection
+func InitPostgreSqlDB(dsn string) (*gorm.DB, error) {
+	// Accepts a full DSN string, e.g. "postgresql://user:pass@host:port/dbname?sslmode=verify-full"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		logrus.Error(err)
-		return nil, err
+		fmt.Println("Failed to connect to PostgreSQL database:", err)
+		return nil, fmt.Errorf("failed to connect to database: %v", err)
 	}
 	return db, nil
 }
