@@ -11,6 +11,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,56 +20,57 @@ var DB *gorm.DB
 var R *gin.Engine
 
 type User struct {
-	ID       string  `json:"id" gorm:"primaryKey"`
-	Name     string  `json:"name"`
-	Email    string  `json:"email"`
-	Avatar   string  `json:"avatar"`
-	Password string  `json:"password"`
+	ID       string  `json:"id" gorm:"primaryKey;column:id;size:36"`
+	Name     string  `json:"name" gorm:"column:name;size:100"`
+	Email    string  `json:"email" gorm:"column:email;size:255;uniqueIndex"`
+	Avatar   string  `json:"avatar" gorm:"column:avatar;size:500"`
+	Password string  `json:"password" gorm:"column:password;size:255"`
 	Tokens   []Token `json:"tokens" gorm:"foreignKey:UserID"`
 }
 
 type Token struct {
-	ID       string    `json:"id" gorm:"primaryKey"`
-	UserID   string    `json:"user_id"`
-	CreateAt time.Time `json:"created_at" gorm:"autoCreateTime"`
-	Token    string    `json:"token"`
+	ID       string    `json:"id" gorm:"primaryKey;column:id;size:36"`
+	UserID   string    `json:"user_id" gorm:"column:user_id;size:36"`
+	CreateAt time.Time `json:"created_at" gorm:"autoCreateTime;column:created_at"`
+	Token    string    `json:"token" gorm:"column:token;size:255;uniqueIndex"`
 }
+
 type Thread struct {
-	ID        string       `json:"id" gorm:"primaryKey"`
-	Title     string       `json:"title"`
-	Body      string       `json:"body"`
-	Category  string       `json:"category"`
-	CreatedAt time.Time    `json:"createdAt"`
-	UpdatedAt time.Time    `json:"updatedAt"`
-	OwnerID   string       `json:"owner_id"`
+	ID        string       `json:"id" gorm:"primaryKey;column:id;size:36"`
+	Title     string       `json:"title" gorm:"column:title;size:255"`
+	Body      string       `json:"body" gorm:"column:body;type:text"`
+	Category  string       `json:"category" gorm:"column:category;size:100"`
+	CreatedAt time.Time    `json:"createdAt" gorm:"column:created_at"`
+	UpdatedAt time.Time    `json:"updatedAt" gorm:"column:updated_at"`
+	OwnerID   string       `json:"owner_id" gorm:"column:owner_id;size:36"`
 	Owner     User         `json:"owner" gorm:"foreignKey:OwnerID"`
 	Comments  []Comment    `json:"comments" gorm:"foreignKey:ThreadID"`
 	Votes     []ThreadVote `json:"votes" gorm:"foreignKey:ThreadID"`
 }
 
 type Comment struct {
-	ID        string        `json:"id" gorm:"primaryKey"`
-	Content   string        `json:"content"`
-	CreatedAt time.Time     `json:"createdAt"`
-	UpdatedAt time.Time     `json:"updatedAt"`
-	OwnerID   string        `json:"owner_id"`
+	ID        string        `json:"id" gorm:"primaryKey;column:id;size:36"`
+	Content   string        `json:"content" gorm:"column:content;type:text"`
+	CreatedAt time.Time     `json:"createdAt" gorm:"column:created_at"`
+	UpdatedAt time.Time     `json:"updatedAt" gorm:"column:updated_at"`
+	OwnerID   string        `json:"owner_id" gorm:"column:owner_id;size:36"`
 	Owner     User          `json:"owner" gorm:"foreignKey:OwnerID"`
-	ThreadID  string        `json:"thread_id"`
+	ThreadID  string        `json:"thread_id" gorm:"column:thread_id;size:36"`
 	Votes     []CommentVote `json:"votes" gorm:"foreignKey:CommentID"`
 }
 
 type ThreadVote struct {
-	ID       string `json:"id" gorm:"primaryKey"`
-	ThreadID string `json:"thread_id"`
-	UserID   string `json:"user_id"`
-	VoteType string `json:"vote_type"` // "up", "down", "neutral"
+	ID       string `json:"id" gorm:"primaryKey;column:id;size:36"`
+	ThreadID string `json:"thread_id" gorm:"column:thread_id;size:36"`
+	UserID   string `json:"user_id" gorm:"column:user_id;size:36"`
+	VoteType string `json:"vote_type" gorm:"column:vote_type;size:10"`
 }
 
 type CommentVote struct {
-	ID        string `json:"id" gorm:"primaryKey"`
-	CommentID string `json:"comment_id"`
-	UserID    string `json:"user_id"`
-	VoteType  string `json:"vote_type"` // "up", "down", "neutral"
+	ID        string `json:"id" gorm:"primaryKey;column:id;size:36"`
+	CommentID string `json:"comment_id" gorm:"column:comment_id;size:36"`
+	UserID    string `json:"user_id" gorm:"column:user_id;size:36"`
+	VoteType  string `json:"vote_type" gorm:"column:vote_type;size:10"`
 }
 
 func AutoMigrateDB(db *gorm.DB) {
@@ -118,11 +120,13 @@ func main() {
 	dbDsn := os.Getenv("DB_PATH")
 
 	var err error
-	DB, err = InitPostgreSqlDB(dbDsn)
+	DB, err = InitAndCheckDB(dbDsn)
 	if err != nil {
 		logrus.Fatalf("Database setup failed: %v", err)
 	}
-	// AutoMigrateDB(DB)
+	go func() {
+		AutoMigrateDB(DB)
+	}()
 
 	R = gin.Default()
 	R.Use(cors.New(cors.Config{
@@ -135,34 +139,35 @@ func main() {
 	}))
 
 	// User endpoints
-	R.POST("/register", RegisterHandler)
-	R.POST("/login", LoginHandler)
-	R.GET("/users", GetAllUsersHandler)
-	R.Any("/users/me", GetOwnProfileHandler)
+	nomoAPI := R.Group("/nomo")
+	nomoAPI.POST("/register", RegisterHandler)
+	nomoAPI.POST("/login", LoginHandler)
+	nomoAPI.GET("/users", GetAllUsersHandler)
+	nomoAPI.Any("/users/me", GetOwnProfileHandler)
 	// Thread endpoints
-	R.GET("/threads", GetAllThreadsHandler)
-	R.POST("/threads", CreateThreadHandler)
-	R.GET("/threads/:threadId", GetThreadDetailHandler)
-	R.POST("/threads/:threadId/comments", CreateThreadCommentHandler)
-	R.POST("/threads/:threadId/up-vote", UpVoteThreadHandler)
-	R.POST("/threads/:threadId/down-vote", DownVoteThreadHandler)
-	R.POST("/threads/:threadId/neutral-vote", NeutralVoteThreadHandler)
+	nomoAPI.GET("/threads", GetAllThreadsHandler)
+	nomoAPI.POST("/threads", CreateThreadHandler)
+	nomoAPI.GET("/threads/:threadId", GetThreadDetailHandler)
+	nomoAPI.POST("/threads/:threadId/comments", CreateThreadCommentHandler)
+	nomoAPI.POST("/threads/:threadId/up-vote", UpVoteThreadHandler)
+	nomoAPI.POST("/threads/:threadId/down-vote", DownVoteThreadHandler)
+	nomoAPI.POST("/threads/:threadId/neutral-vote", NeutralVoteThreadHandler)
 
 	// Comment vote endpoints
-	R.POST("/threads/:threadId/comments/:commentId/up-vote", UpVoteCommentHandler)
-	R.POST("/threads/:threadId/comments/:commentId/down-vote", DownVoteCommentHandler)
-	R.POST("/threads/:threadId/comments/:commentId/neutral-vote", NeutralVoteCommentHandler)
+	nomoAPI.POST("/threads/:threadId/comments/:commentId/up-vote", UpVoteCommentHandler)
+	nomoAPI.POST("/threads/:threadId/comments/:commentId/down-vote", DownVoteCommentHandler)
+	nomoAPI.POST("/threads/:threadId/comments/:commentId/neutral-vote", NeutralVoteCommentHandler)
 
 	// CRUD endpoints for threads
-	R.PUT("/threads/:threadId", UpdateThreadHandler)
-	R.DELETE("/threads/:threadId", DeleteThreadHandler)
+	nomoAPI.PUT("/threads/:threadId", UpdateThreadHandler)
+	nomoAPI.DELETE("/threads/:threadId", DeleteThreadHandler)
 
 	// CRUD endpoints for comments
-	R.PUT("/threads/:threadId/comments/:commentId", UpdateCommentHandler)
-	R.DELETE("/threads/:threadId/comments/:commentId", DeleteCommentHandler)
+	nomoAPI.PUT("/threads/:threadId/comments/:commentId", UpdateCommentHandler)
+	nomoAPI.DELETE("/threads/:threadId/comments/:commentId", DeleteCommentHandler)
 
 	// Leaderboard
-	R.GET("/leaderboards", GetLeaderboardsHandler)
+	nomoAPI.GET("/leaderboards", GetLeaderboardsHandler)
 
 	R.Run() // listen and serve on specified port
 }
@@ -1632,5 +1637,26 @@ func InitPostgreSqlDB(dsn string) (*gorm.DB, error) {
 		fmt.Println("Failed to connect to PostgreSQL database:", err)
 		return nil, fmt.Errorf("failed to connect to database: %v", err)
 	}
+	return db, nil
+}
+func InitAndCheckDB(dsn string) (*gorm.DB, error) {
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		logrus.Error(err)
+		return nil, fmt.Errorf("failed to connect to database: %v", err)
+	}
+
+	// Get the underlying sql.DB object
+	sqlDB, err := db.DB()
+	if err != nil {
+		logrus.Error(err)
+		return nil, fmt.Errorf("failed to get db instance: %v", err)
+	}
+
+	// Set connection pool parameters
+	sqlDB.SetMaxIdleConns(10)           // Set the maximum number of idle connections
+	sqlDB.SetMaxOpenConns(100)          // Set the maximum number of open connections
+	sqlDB.SetConnMaxLifetime(time.Hour) // Set the maximum lifetime of a connection
 	return db, nil
 }
