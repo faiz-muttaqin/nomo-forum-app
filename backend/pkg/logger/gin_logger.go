@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"microblog/backend/pkg/util"
+	"nomo-forum-app/backend/pkg/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mssola/user_agent"

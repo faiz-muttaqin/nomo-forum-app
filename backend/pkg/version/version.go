@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"microblog/backend/pkg/util"
+	"nomo-forum-app/backend/pkg/util"
 )
 
 type Info struct {

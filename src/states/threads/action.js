@@ -104,19 +104,35 @@ function addCommentActionCreator(threadId, comment) {
 }
 
 function asyncAddThread({ title, body, category }) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
+      const { authUser } = getState();
       const thread = await api.createThread({ title, body, category });
       const threadDetail = await api.getThreadDetail(thread.id);
       const users = getCachedUsers();
+      
+      // First try to find user by ownerId, then fallback to authUser
+      let threadUser = users.find((user) => user.id === thread.ownerId);
+      
+      // If user not found in cache, use the current logged-in user
+      if (!threadUser && authUser) {
+        threadUser = authUser;
+      }
+      
       const threadsWithDetails = {
         ...thread,
-        comments: threadDetail.comments,
-        user: users.find((user) => user.id === thread.ownerId),
+        ...threadDetail,
+        comments: threadDetail.comments || [],
+        user: threadUser,
+        totalComments: threadDetail.comments ? threadDetail.comments.length : 0,
       };
+      
       dispatch(addThreadActionCreator(threadsWithDetails));
+      return true;
     } catch (error) {
-      console.error(error.message);
+      console.error('Error creating thread:', error.message);
+      alert(`Failed to create thread: ${error.message}`);
+      return false;
     }
   };
 }

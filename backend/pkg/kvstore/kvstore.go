@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"microblog/backend/pkg/clr"
+	"nomo-forum-app/backend/pkg/clr"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"microblog/backend/pkg/version"
+	"nomo-forum-app/backend/pkg/version"
 )
 
 func Version(versionFiles []byte) error {

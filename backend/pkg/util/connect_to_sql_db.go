@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"microblog/backend/pkg/clr"
+	"nomo-forum-app/backend/pkg/clr"
 
 	"github.com/glebarez/sqlite"
 	mysqlDriver "github.com/go-sql-driver/mysql"

@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"strings"
 
-	"microblog/backend/pkg/util"
+	"nomo-forum-app/backend/pkg/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
