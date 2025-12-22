@@ -17,8 +17,10 @@ function HomePage({ keyword }) {
     : threads;
   return (
     <section className="container">
-      <ThreadFormCard />
-      <ThreadList threads={filteredThreads} />
+      <div className="main-feed-container">
+        <ThreadFormCard />
+        <ThreadList threads={filteredThreads} />
+      </div>
     </section>
   );
 }

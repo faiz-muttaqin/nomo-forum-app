@@ -8,21 +8,10 @@ function LeaderboardPage({ keyword }) {
   const leaderboards = useSelector((states) => states.leaderboards);
   const { theme } = useContext(ThemeContext);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(asyncPopulateLeaderBoards());
-  }, []);
-  // Theme-based classes
-  const containerClass = theme === 'dark' ? 'container py-4 text-light' : 'container py-4';
-  const headerRowClass =
-    theme === 'dark'
-      ? 'row bg-secondary text-white rounded-pill mb-3 py-2'
-      : 'row bg-dark text-white rounded-pill mb-3 py-2';
-  const itemRowClass =
-    theme === 'dark'
-      ? 'row mb-3 align-items-center rounded-5 shadow bg-dark bg-opacity-75'
-      : 'row mb-3 align-items-center rounded-5 shadow bg-light';
-  const textClass = theme === 'dark' ? 'text-light' : 'text-dark';
-  const mutedTextClass = theme === 'dark' ? 'text-light-50' : 'text-muted';
+  }, [dispatch]);
 
   // Filter leaderboards based on keyword
   const filteredLeaderboards = leaderboards.filter((leaderboardItem) => {
@@ -35,11 +24,15 @@ function LeaderboardPage({ keyword }) {
     );
   });
   return (
-    <div className={containerClass}>
-      <h1 className="text-center mb-4">Leaderboard</h1>
-      <div>
-        <div className="p-3">
-          <div className={headerRowClass}>
+    <div className="container">
+      <div className="main-feed-container">
+        <h2 className={`text-center mb-4 fw-bold ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>
+          🏆 Leaderboard
+        </h2>
+        
+        <div className={`card border-0 p-4 ${theme === 'dark' ? 'modern-card-dark' : 'modern-card'}`}>
+          {/* Header Row */}
+          <div className="row align-items-center py-3 mb-3 border-bottom">
             <div className="col-2 text-center">
               <strong>Rank</strong>
             </div>
@@ -51,34 +44,53 @@ function LeaderboardPage({ keyword }) {
             </div>
           </div>
 
+          {/* Leaderboard Items */}
           {filteredLeaderboards.map((leaderboardItem, index) => (
-            <div key={leaderboardItem.user.id} className={itemRowClass}>
-              <div className="col-1 text-center">
-                <div className={`fw-bold p-2 ${textClass}`}>{index + 1}</div>
+            <div 
+              key={leaderboardItem.user.id} 
+              className={`row align-items-center py-3 mb-2 rounded-3 fade-in-up ${
+                theme === 'dark' ? 'bg-dark bg-opacity-25' : 'bg-light'
+              }`}
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              {/* Rank */}
+              <div className="col-2 text-center">
+                <div className={`fw-bold fs-4 ${
+                  index === 0 ? 'text-warning' : 
+                  index === 1 ? 'text-secondary' :
+                  index === 2 ? 'text-danger' :
+                  theme === 'dark' ? 'text-light' : 'text-dark'
+                }`}>
+                  {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                </div>
               </div>
 
-              <div className="col-8">
-                <div className="p-2">
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={leaderboardItem.user.avatar}
-                      alt={`${leaderboardItem.user.name}'s avatar`}
-                      className="rounded-circle me-3"
-                      width="48"
-                      height="48"
-                    />
-                    <div>
-                      <h6 className={`mb-0 ${textClass}`}>{leaderboardItem.user.name}</h6>
-                      <small className={mutedTextClass}>{leaderboardItem.user.email}</small>
-                    </div>
+              {/* User Info */}
+              <div className="col-7">
+                <div className="d-flex align-items-center">
+                  <img
+                    src={leaderboardItem.user.avatar}
+                    alt={`${leaderboardItem.user.name}'s avatar`}
+                    className="rounded-circle me-3 avatar-md"
+                  />
+                  <div>
+                    <h6 className={`mb-0 fw-semibold ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>
+                      {leaderboardItem.user.name}
+                    </h6>
+                    <small className={theme === 'dark' ? 'text-light opacity-75' : 'text-muted'}>
+                      {leaderboardItem.user.email}
+                    </small>
                   </div>
                 </div>
               </div>
 
+              {/* Score */}
               <div className="col-3 text-center">
-                <div className="p-2">
-                  <span className={`fw-bold ${textClass}`}>{leaderboardItem.score} Pts</span>
-                </div>
+                <span className={`badge badge-modern ${
+                  theme === 'dark' ? 'bg-primary bg-opacity-25 text-primary' : 'bg-primary text-white'
+                } fs-6`}>
+                  {leaderboardItem.score}
+                </span>
               </div>
             </div>
           ))}
