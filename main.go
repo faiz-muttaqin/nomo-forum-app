@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"nomo-forum-app/backend/pkg/args"
 	"nomo-forum-app/backend/pkg/util"
 	"time"
 
@@ -115,7 +116,9 @@ func main() {
 	// Load environment variables using godotenv
 	_ = godotenv.Load()
 	// dbDsn := os.Getenv("DB_PATH")
-
+	if args.Install() != nil {
+		return
+	}
 	var err error
 	DB, err = util.InitSqlLiteDB("database.db")
 	if err != nil {
