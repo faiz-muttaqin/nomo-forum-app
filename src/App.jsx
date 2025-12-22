@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Route, Routes, useSearchParams } from 'react-router-dom';
+import { Route, Routes, useSearchParams, Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { LanguageProvider, LANGUAGES } from './contexts/LanguageContext';
@@ -17,11 +17,15 @@ import HomePage from './pages/HomePage';
 import LeaderboardPage from './pages/LeaderboardPage';
 import UserDetail from './pages/UserDetail';
 import { setAuthModalActionCreator } from './states/authModal/action';
+import { FaHome, FaRegUser } from 'react-icons/fa';
+import { GiTrophyCup } from 'react-icons/gi';
 
 function App() {
   const authUser = useSelector((state) => state.authUser);
   const authModal = useSelector((state) => state.authModal);
   const dispatch = useDispatch();
+  const location = useLocation();
+  
   const handleAuthModal = (value) => {
     dispatch(setAuthModalActionCreator(value));
   };
@@ -71,43 +75,98 @@ function App() {
     <LanguageProvider value={{ language, changeLanguage }}>
       <ThemeProvider value={{ theme, toggleTheme }}>
         <div
-          className={`min-vh-100 ${theme === 'dark' ? 'bg-dark text-light' : 'bg-body-secondary text-dark'}`}
+          className={`min-vh-100 ${theme === 'dark' ? 'bg-dark text-light' : ''}`}
+          style={{
+            background: theme === 'dark' 
+              ? 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)'
+              : 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)'
+          }}
         >
-          <div className="main-container">
-            <div className="row align-items-center p-4 bg-secondary bg-opacity-25 ">
-              <div className="col-md-6 d-flex align-items-center gap-3">
-                <img src="./icon.png" style={{ width: '40px', height: '40px' }} />
-                <h2 className="text-title">NOMO</h2>
-                <Navigation />
-              </div>
-              <div className="col-md-6 d-flex align-items-center justify-content-end gap-2">
-                <SearchBar keyword={keyword} onChange={handleKeywordChange} />
-                <BtnLanguage />
-                <ToggleTheme />
+          {/* Modern Header */}
+          <header className={theme === 'dark' ? 'modern-header-dark' : 'modern-header'}>
+            <div className="container-fluid px-4 py-3">
+              <div className="row align-items-center g-3">
+                <div className="col-12 col-md-6 d-flex align-items-center gap-3 flex-wrap">
+                  <img src="./icon.png" style={{ width: '40px', height: '40px' }} className="rounded-circle" />
+                  <h2 className={`text-title mb-0 ${theme === 'dark' ? 'text-light' : 'text-dark'}`}>NOMO</h2>
+                  <Navigation />
+                </div>
+                <div className="col-12 col-md-6 d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
+                  <SearchBar keyword={keyword} onChange={handleKeywordChange} />
+                  <BtnLanguage />
+                  <ToggleTheme />
 
-                {authUser ? (
-                  <BtnLoggedIn authUser={authUser} />
-                ) : (
-                  <BtnMotion
-                    id="loginButton"
-                    className="btn btn-primary-orange"
-                    onClick={() => handleAuthModal(true)}
-                  >
-                    Login
-                  </BtnMotion>
-                )}
+                  {authUser ? (
+                    <BtnLoggedIn authUser={authUser} />
+                  ) : (
+                    <BtnMotion
+                      id="loginButton"
+                      className="btn btn-primary-orange"
+                      onClick={() => handleAuthModal(true)}
+                    >
+                      Login
+                    </BtnMotion>
+                  )}
+                </div>
               </div>
             </div>
-            <main className="p-4">
-              <Routes>
-                <Route path="/" element={<HomePage keyword={keyword} />} />
-                <Route path="/leaderboard" element={<LeaderboardPage keyword={keyword} />} />
-                <Route path="/user-detail" element={<UserDetail />} />
-                <Route path="*" element={<PageNotFound />} />
-              </Routes>
-              <AuthModal show={authModal} onClose={() => handleAuthModal(false)} />
-            </main>
-          </div>
+          </header>
+
+          {/* Main Content */}
+          <main className="py-4">
+            <Routes>
+              <Route path="/" element={<HomePage keyword={keyword} />} />
+              <Route path="/leaderboard" element={<LeaderboardPage keyword={keyword} />} />
+              <Route path="/user-detail" element={<UserDetail />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+            <AuthModal show={authModal} onClose={() => handleAuthModal(false)} />
+          </main>
+
+          {/* Mobile Navigation */}
+          <nav className={`mobile-nav d-md-none ${theme === 'dark' ? 'mobile-nav-dark' : ''}`}>
+            <div className="d-flex gap-2">
+              <Link 
+                to="/" 
+                className={`btn d-flex flex-column align-items-center justify-content-center ${
+                  location.pathname === '/' 
+                    ? 'bg-primary-orange text-white' 
+                    : theme === 'dark' 
+                      ? 'bg-transparent text-light' 
+                      : 'bg-transparent text-dark'
+                }`}
+              >
+                <FaHome />
+                <small className="mt-1" style={{ fontSize: '0.7rem' }}>Home</small>
+              </Link>
+              <Link 
+                to="/leaderboard" 
+                className={`btn d-flex flex-column align-items-center justify-content-center ${
+                  location.pathname === '/leaderboard' 
+                    ? 'bg-primary-orange text-white' 
+                    : theme === 'dark' 
+                      ? 'bg-transparent text-light' 
+                      : 'bg-transparent text-dark'
+                }`}
+              >
+                <GiTrophyCup />
+                <small className="mt-1" style={{ fontSize: '0.7rem' }}>Leaderboard</small>
+              </Link>
+              <Link 
+                to="/user-detail" 
+                className={`btn d-flex flex-column align-items-center justify-content-center ${
+                  location.pathname === '/user-detail' 
+                    ? 'bg-primary-orange text-white' 
+                    : theme === 'dark' 
+                      ? 'bg-transparent text-light' 
+                      : 'bg-transparent text-dark'
+                }`}
+              >
+                <FaRegUser />
+                <small className="mt-1" style={{ fontSize: '0.7rem' }}>Profile</small>
+              </Link>
+            </div>
+          </nav>
         </div>
       </ThemeProvider>
     </LanguageProvider>

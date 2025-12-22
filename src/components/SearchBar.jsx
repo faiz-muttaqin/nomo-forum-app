@@ -6,18 +6,18 @@ export default function SearchBar({ keyword, onChange }) {
   const { theme } = useContext(ThemeContext);
   const inputClass =
     theme === 'dark'
-      ? 'form-control border-0 bg-secondary bg-opacity-25 text-light border-secondary'
-      : 'form-control border-0 bg-light text-dark border-secondary';
+      ? 'form-control form-control-modern bg-dark bg-opacity-50 text-light border-secondary'
+      : 'form-control form-control-modern bg-white text-dark border-secondary';
   return (
-    <div className="input-group">
+    <div className="input-group" style={{ minWidth: '200px', maxWidth: '300px' }}>
       <input
         className={inputClass}
         type="text"
-        placeholder="Cari..."
+        placeholder="Search..."
         value={keyword}
         onChange={(e) => onChange(e.target.value)}
         autoComplete="off"
-        aria-label="Cari "
+        aria-label="Search"
       />
     </div>
   );

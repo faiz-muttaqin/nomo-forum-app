@@ -14,20 +14,20 @@ export default function ThreadList({ threads }) {
   if (!threads || threads.length === 0) {
     return (
       <>
-        <div className="row g-3 ">
-          {Array.from({ length: 7 }).map((_, index) => (
-            <div className="col-12" key={`loading-${index}`}>
-              <ThreadItemLoading />
-            </div>
+        <div className="d-flex flex-column gap-3 mt-3">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <ThreadItemLoading key={`loading-${index}`} />
           ))}
         </div>
       </>
     );
   }
   return (
-    <div className="row g-3">
+    <div className="d-flex flex-column gap-3 mt-3">
       {threads.map((thread) => (
-        <ThreadItem key={thread.id} {...thread} />
+        <div key={thread.id} className="fade-in-up">
+          <ThreadItem {...thread} />
+        </div>
       ))}
     </div>
   );

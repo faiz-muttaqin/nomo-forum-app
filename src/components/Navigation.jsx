@@ -10,24 +10,26 @@ function Navigation() {
 
   const getNavLinkClass = (path) => {
     const isActive = location.pathname === path;
-    const baseClass = theme === 'dark' ? 'bg-secondary text-light' : 'bg-light text-dark';
-    const activeClass = 'bg-primary-orange text-white';
+    const baseClass = theme === 'dark' 
+      ? 'bg-secondary bg-opacity-25 text-light border-secondary' 
+      : 'bg-light text-dark border-light';
+    const activeClass = 'bg-primary-orange text-white border-primary-orange';
 
-    return `btn d-flex align-items-center gap-2 ${isActive ? activeClass : baseClass} ${isActive ? '' : 'bg-opacity-25'}`;
+    return `btn d-flex align-items-center justify-content-center ${isActive ? activeClass : baseClass}`;
   };
 
-  const iconStyle = { fontSize: '1.5rem' };
+  const iconStyle = { fontSize: '1.2rem' };
 
   return (
-    <nav>
+    <nav className="d-none d-md-block">
       <div className="btn-group" role="group" aria-label="Navigation">
-        <Link to="/" className={getNavLinkClass('/')}>
+        <Link to="/" className={getNavLinkClass('/')} title="Home">
           <FaHome style={iconStyle} />
         </Link>
-        <Link to="/leaderboard" className={getNavLinkClass('/leaderboard')}>
+        <Link to="/leaderboard" className={getNavLinkClass('/leaderboard')} title="Leaderboard">
           <GiTrophyCup style={iconStyle} />
         </Link>
-        <Link to="/user-detail" className={getNavLinkClass('/user-detail')}>
+        <Link to="/user-detail" className={getNavLinkClass('/user-detail')} title="Profile">
           <FaRegUser style={iconStyle} />
         </Link>
       </div>

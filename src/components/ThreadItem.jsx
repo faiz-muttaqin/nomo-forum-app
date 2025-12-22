@@ -150,31 +150,31 @@ function ThreadItem({
     setT(translations[language] || translations.id);
   }, [language]);
   const cardClass =
-    theme === 'dark' ? 'bg-secondary bg-opacity-25 text-light' : 'bg-white text-dark';
+    theme === 'dark' ? 'modern-card-dark text-light' : 'modern-card text-dark';
   const cardCommentsClass =
     theme === 'dark'
-      ? 'bg-secondary bg-opacity-25 text-light'
-      : 'bg-secondary bg-opacity-25 text-dark';
+      ? 'bg-dark bg-opacity-50 text-light'
+      : 'bg-light text-dark';
   const upVoteClass =
     theme === 'dark'
       ? upVote
-        ? ' bg-primary bg-opacity-25 text-primary'
-        : 'bg-secondary bg-opacity-25 text-light'
+        ? 'bg-primary bg-opacity-25 text-primary border-primary'
+        : 'bg-secondary bg-opacity-25 text-light border-secondary'
       : upVote
-        ? ' bg-primary bg-opacity-25 text-primary'
-        : 'bg-secondary bg-opacity-25 text-dark';
+        ? 'bg-primary bg-opacity-25 text-primary border-primary'
+        : 'bg-light text-dark border-light';
   const downVoteClass =
     theme === 'dark'
       ? downVote
-        ? ' bg-danger bg-opacity-25 text-danger'
-        : 'bg-secondary bg-opacity-25 text-light'
+        ? 'bg-danger bg-opacity-25 text-danger border-danger'
+        : 'bg-secondary bg-opacity-25 text-light border-secondary'
       : downVote
-        ? ' bg-danger bg-opacity-25 text-danger'
-        : 'bg-secondary bg-opacity-25 text-dark';
+        ? 'bg-danger bg-opacity-25 text-danger border-danger'
+        : 'bg-light text-dark border-light';
   const navLinkClass =
     theme === 'dark'
-      ? 'bg-secondary bg-opacity-25 text-light'
-      : 'bg-secondary bg-opacity-25 text-dark';
+      ? 'bg-secondary bg-opacity-25 text-light border-secondary'
+      : 'bg-light text-dark border-light';
   const { avatar, name, email } = user;
 
   const isString = (isiBody) => isiBody.search('<div>|<pre>|<p>|<b>|<br>|<i>|<blockquote>');
@@ -185,167 +185,184 @@ function ThreadItem({
   };
 
   return (
-    <div className={`p-0 ${cardClass} border-0 rounded-2`}>
-      <div className="card-body p-3">
+    <div className={`card border-0 ${cardClass} mb-0`}>
+      <div className="card-body p-4">
+        {/* User Info Header */}
         <div className="d-flex align-items-center mb-3">
           <div className="flex-shrink-0">
             <img
-              className="rounded-circle"
+              className="rounded-circle avatar-md"
               src={avatar}
               alt={id}
               title={name}
-              style={{ height: '36px' }}
             />
           </div>
           <div className="flex-grow-1 ms-3">
-            <h5 className="card-title ms-2 mb-0">{name}</h5>
-            <h6 className="card-subtitle ms-2 mb-0 text-secondary">
-              {email} • {postedAt(createdAt)}
-            </h6>
+            <h6 className="mb-0 fw-bold">{name}</h6>
+            <small className={theme === 'dark' ? 'text-light opacity-75' : 'text-muted'}>
+              {postedAt(createdAt)}
+            </small>
           </div>
         </div>
 
-        <h5 className="card-title">{title}</h5>
+        {/* Content */}
+        <h5 className="card-title fw-bold mb-2">{title}</h5>
         {isString(body) === -1 ? (
-          <p className="card-text">{body}</p>
+          <p className="card-text mb-3">{body}</p>
         ) : (
-          <div className="card-text">{parse(body)}</div>
+          <div className="card-text mb-3">{parse(body)}</div>
         )}
-        <div className="mb-2">
+        
+        {/* Tags/Categories */}
+        <div className="mb-3">
           {category.split(',').map((cat, index) => (
             <span
               key={index}
-              className={`badge me-1 bg-opacity-50 ${
-                theme === 'dark' ? 'bg-info text-dark' : 'bg-primary'
+              className={`badge badge-modern me-2 ${
+                theme === 'dark' ? 'bg-info bg-opacity-25 text-info' : 'bg-primary bg-opacity-10 text-primary'
               }`}
             >
-              {cat.trim()}
+              #{cat.trim()}
             </span>
           ))}
         </div>
-        <div className="btn-group" role="group" aria-label="React Actions">
+        
+        {/* Action Buttons */}
+        <div className="d-flex gap-2 flex-wrap" role="group" aria-label="React Actions">
           <BtnMotion
             onClick={handleUpvote}
-            className={`btn d-flex align-items-center gap-2 ${upVoteClass}`}
+            className={`btn btn-sm d-flex align-items-center gap-2 ${upVoteClass}`}
           >
-            <TbArrowBigUp /> {t.upvote} • {upVoteTotal}
+            <TbArrowBigUp size={20} /> <span className="fw-semibold">{upVoteTotal}</span>
           </BtnMotion>
           <BtnMotion
             onClick={handleDownvote}
-            className={`btn d-flex align-items-center gap-2 ${downVoteClass}`}
+            className={`btn btn-sm d-flex align-items-center gap-2 ${downVoteClass}`}
             disabled={disableVote}
           >
-            <TbArrowBigDown /> {t.downvote} • {downVoteTotal}
+            <TbArrowBigDown size={20} /> <span className="fw-semibold">{downVoteTotal}</span>
           </BtnMotion>
           <BtnMotion
             onClick={handleShowComment}
-            className={`btn d-flex align-items-center gap-2 ${navLinkClass}`}
+            className={`btn btn-sm d-flex align-items-center gap-2 ${navLinkClass}`}
             disabled={disableVote}
           >
-            <FiMessageSquare /> : {totalComments}
+            <FiMessageSquare size={18} /> <span className="fw-semibold">{totalComments}</span>
           </BtnMotion>
         </div>
       </div>
       {/* Comments Section */}
       {showComments && (
-        <div className={`card p-3 ${cardCommentsClass} border-0`}>
-          <p>Details</p>
-          <div className="mb-3 d-flex align-items-center gap-2">
+        <div className={`p-4 border-top ${cardCommentsClass}`}>
+          <h6 className="fw-bold mb-3">{t.comments || 'Comments'}</h6>
+          
+          {/* Add Comment Input */}
+          <div className="mb-4 d-flex align-items-start gap-3">
             {authUser ? (
               <>
                 <div className="flex-shrink-0">
                   <img
-                    className="rounded-circle"
+                    className="rounded-circle avatar-sm"
                     src={authUser.avatar}
                     alt={authUser.name}
-                    style={{ height: '36px' }}
                   />
                 </div>
                 <div className="flex-grow-1">
                   <div className="input-group">
                     <input
                       type="text"
-                      className={`border-0 form-control ${
-                        theme === 'dark' ? 'bg-secondary bg-opacity-25 text-light' : ''
+                      className={`form-control form-control-modern border ${
+                        theme === 'dark' ? 'bg-dark bg-opacity-50 text-light border-secondary' : 'border-secondary'
                       }`}
-                      placeholder={t.addComment}
+                      placeholder={t.addComment || 'Write a comment...'}
                       aria-label="Add comment"
                       value={commentContent}
                       onChange={handleCommentChange}
                     />
                     <BtnMotion
-                      className={`border-0 btn ${theme === 'dark' ? 'btn-light' : 'btn-dark'}`}
+                      className="btn btn-primary-orange"
                       type="button"
                       onClick={handleCommentSubmit}
                       disabled={isSubmittingComment || !commentContent.trim()}
                     >
-                      <IoIosSend />
+                      <IoIosSend size={20} />
                     </BtnMotion>
                   </div>
                 </div>
               </>
             ) : (
-              <p className="text-secondary mb-0">{t.loginToComment}</p>
+              <p className={`${theme === 'dark' ? 'text-light opacity-75' : 'text-muted'} mb-0`}>
+                {t.loginToComment || 'Login to comment'}
+              </p>
             )}
           </div>
+          
+          {/* Comments List */}
           {comments && comments.length > 0 ? (
-            comments.map((comment) => (
-              <div key={comment.id} className="mb-2 p-3">
-                <div className="d-flex align-items-center mb-2">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="rounded-circle"
-                      src={comment.owner.avatar}
-                      alt={comment.owner.name}
-                      style={{ height: '25px' }}
-                    />
+            <div className="d-flex flex-column gap-3">
+              {comments.map((comment) => (
+                <div key={comment.id} className={`p-3 rounded-3 ${theme === 'dark' ? 'bg-dark bg-opacity-25' : 'bg-white'}`}>
+                  <div className="d-flex align-items-start mb-2">
+                    <div className="flex-shrink-0">
+                      <img
+                        className="rounded-circle avatar-sm"
+                        src={comment.owner.avatar}
+                        alt={comment.owner.name}
+                      />
+                    </div>
+                    <div className="flex-grow-1 ms-3">
+                      <div className="mb-1">
+                        <span className="fw-semibold me-2">{comment.owner.name}</span>
+                        <small className={theme === 'dark' ? 'text-light opacity-75' : 'text-muted'}>
+                          {postedAt(comment.createdAt)}
+                        </small>
+                      </div>
+                      <div className="mb-2">
+                        {isString(comment.content) === -1 ? comment.content : parse(comment.content)}
+                      </div>
+                      <div className="d-flex gap-2">
+                        <BtnMotion
+                          className={`btn btn-sm d-flex align-items-center gap-1 ${
+                            theme === 'dark'
+                              ? comment.upVotesBy.includes(authUser?.id)
+                                ? 'bg-primary bg-opacity-25 text-primary border-primary'
+                                : 'bg-secondary bg-opacity-25 text-light border-secondary'
+                              : comment.upVotesBy.includes(authUser?.id)
+                                ? 'bg-primary bg-opacity-25 text-primary border-primary'
+                                : 'bg-light text-dark border-light'
+                          }`}
+                          onClick={() =>
+                            handleCommentUpvote(comment.id, comment.upVotesBy.includes(authUser?.id))
+                          }
+                        >
+                          <TbArrowBigUp size={16} /> {comment.upVotesBy.length}
+                        </BtnMotion>
+                        <BtnMotion
+                          className={`btn btn-sm d-flex align-items-center gap-1 ${
+                            theme === 'dark'
+                              ? comment.downVotesBy.includes(authUser?.id)
+                                ? 'bg-danger bg-opacity-25 text-danger border-danger'
+                                : 'bg-secondary bg-opacity-25 text-light border-secondary'
+                              : comment.downVotesBy.includes(authUser?.id)
+                                ? 'bg-danger bg-opacity-25 text-danger border-danger'
+                                : 'bg-light text-dark border-light'
+                          }`}
+                          onClick={() =>
+                            handleCommentDownvote(comment.id, comment.downVotesBy.includes(authUser?.id))
+                          }
+                        >
+                          <TbArrowBigDown size={16} /> {comment.downVotesBy.length}
+                        </BtnMotion>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex-grow-1 ms-2">
-                    <h6 className="mb-0">{comment.owner.name}</h6>
-                    <small className="text-secondary">{postedAt(comment.createdAt)}</small>
-                  </div>
                 </div>
-                <div className="card-text">
-                  {isString(comment.content) === -1 ? comment.content : parse(comment.content)}
-                </div>
-                <div className="d-flex mt-2">
-                  <BtnMotion
-                    className={`btn btn-sm me-2 bg-opacity-25 ${
-                      theme === 'dark'
-                        ? comment.upVotesBy.includes(authUser?.id)
-                          ? ' bg-primary text-primary'
-                          : 'bg-secondary text-light'
-                        : comment.upVotesBy.includes(authUser?.id)
-                          ? ' bg-primary text-primary'
-                          : 'bg-secondary text-dark'
-                    }`}
-                    onClick={() =>
-                      handleCommentUpvote(comment.id, comment.upVotesBy.includes(authUser?.id))
-                    }
-                  >
-                    <TbArrowBigUp /> {comment.upVotesBy.length}
-                  </BtnMotion>
-                  <BtnMotion
-                    className={`btn btn-sm ${navLinkClass}${
-                      theme === 'dark'
-                        ? comment.downVotesBy.includes(authUser?.id)
-                          ? ' bg-danger text-danger'
-                          : 'bg-secondary text-light'
-                        : comment.downVotesBy.includes(authUser?.id)
-                          ? ' bg-danger text-danger'
-                          : 'bg-secondary text-dark'
-                    }`}
-                    onClick={() =>
-                      handleCommentDownvote(comment.id, comment.downVotesBy.includes(authUser?.id))
-                    }
-                  >
-                    <TbArrowBigDown /> {comment.downVotesBy.length}
-                  </BtnMotion>
-                </div>
-              </div>
-            ))
+              ))}
+            </div>
           ) : (
-            <p className="text-secondary">{t.noComments}</p>
+            <p className={`${theme === 'dark' ? 'text-light opacity-75' : 'text-muted'} text-center mt-3`}>
+              {t.noComments || 'No comments yet. Be the first to comment!'}
+            </p>
           )}
         </div>
       )}
