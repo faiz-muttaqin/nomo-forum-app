@@ -1,8 +1,8 @@
 const api = (() => {
   // const BASE_URL = 'https://forum-api.dicoding.dev/v1';
   // const BASE_URL = 'https://nomo-forum-app.apn.leapcell.app';
-  const BASE_URL = 'https://api.faizmuttaqin.com/nomo';
-  // const BASE_URL = 'http://localhost:8080';
+  // const BASE_URL = 'https://api.faizmuttaqin.com/nomo';
+  const BASE_URL = 'http://localhost:8080/nomo';
 
   function putAccessToken(token) {
     localStorage.setItem('accessToken', token);

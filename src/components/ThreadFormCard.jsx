@@ -42,11 +42,17 @@ function ThreadFormCard() {
 
     setIsLoading(true);
     try {
-      await dispatch(asyncAddThread({ title, body, category }));
-      setTitle('');
-      setBody('');
-      setCategory('');
-      setIsExpanded(false);
+      const result = await dispatch(asyncAddThread({ title, body, category }));
+      // Only reset form if thread was successfully created
+      if (result !== false) {
+        setTitle('');
+        setBody('');
+        setCategory('');
+        setIsExpanded(false);
+      }
+    } catch (error) {
+      console.error('Failed to create thread:', error);
+      alert('Failed to create thread. Please try again.');
     } finally {
       setIsLoading(false);
     }

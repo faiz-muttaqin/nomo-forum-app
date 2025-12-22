@@ -1,9 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
-	"os"
+	"nomo-forum-app/backend/pkg/util"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -11,8 +10,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/mysql"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -117,10 +114,10 @@ func AutoMigrateDB(db *gorm.DB) {
 func main() {
 	// Load environment variables using godotenv
 	_ = godotenv.Load()
-	dbDsn := os.Getenv("DB_PATH")
+	// dbDsn := os.Getenv("DB_PATH")
 
 	var err error
-	DB, err = InitAndCheckDB(dbDsn)
+	DB, err = util.InitSqlLiteDB("database.db")
 	if err != nil {
 		logrus.Fatalf("Database setup failed: %v", err)
 	}
@@ -1626,37 +1623,4 @@ func GetLeaderboardsHandler(c *gin.Context) {
 			"leaderboards": leaderboards,
 		},
 	})
-}
-
-// InitPostgreSqlDB initializes and checks the PostgreSQL database connection
-func InitPostgreSqlDB(dsn string) (*gorm.DB, error) {
-	// Accepts a full DSN string, e.g. "postgresql://user:pass@host:port/dbname?sslmode=verify-full"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		logrus.Error(err)
-		fmt.Println("Failed to connect to PostgreSQL database:", err)
-		return nil, fmt.Errorf("failed to connect to database: %v", err)
-	}
-	return db, nil
-}
-func InitAndCheckDB(dsn string) (*gorm.DB, error) {
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		logrus.Error(err)
-		return nil, fmt.Errorf("failed to connect to database: %v", err)
-	}
-
-	// Get the underlying sql.DB object
-	sqlDB, err := db.DB()
-	if err != nil {
-		logrus.Error(err)
-		return nil, fmt.Errorf("failed to get db instance: %v", err)
-	}
-
-	// Set connection pool parameters
-	sqlDB.SetMaxIdleConns(10)           // Set the maximum number of idle connections
-	sqlDB.SetMaxOpenConns(100)          // Set the maximum number of open connections
-	sqlDB.SetConnMaxLifetime(time.Hour) // Set the maximum lifetime of a connection
-	return db, nil
 }
