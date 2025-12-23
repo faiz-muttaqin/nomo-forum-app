@@ -1,24 +1,33 @@
 # NOMO (No More Missing Out) Discussion App
 
-Aplikasi forum diskusi berbasis React + Vite untuk berbagi pemikiran dan ide dengan komunitas.
+A modern forum discussion application built with React + Vite for sharing thoughts and ideas with the community.
 
-## Fitur
+## 🌐 Live Demo
 
-- Autentikasi pengguna (register dan login)
-- Melihat daftar thread diskusi
-- Membuat thread baru
-- Menampilkan detail thread dan komentar
-- Menambahkan komentar pada thread
-- UI responsif dengan loading indicators
-- Dan lainnya
+**Visit the live application:** [https://nomo-forum-app.faizmuttaqin.com/](https://nomo-forum-app.faizmuttaqin.com/)
 
+## ✨ Features
 
-## Instalasi & Menjalankan
+- 🔐 User authentication (register and login)
+- 📝 View list of discussion threads
+- ➕ Create new threads
+- 💬 Display thread details and comments
+- 📨 Add comments to threads
+- 🎨 Modern UI with glassmorphism design
+- 🌓 Dark/Light theme toggle
+- 🌍 Multi-language support (Indonesian/English)
+- 📱 Fully responsive design with mobile navigation
+- ⚡ Smooth animations powered by Framer Motion
+- 🔄 Loading indicators and optimistic updates
+- 🏆 Leaderboard system
+- 👤 User profile management
 
-1. **Clone repositori**
+## 🚀 Installation & Running
+
+1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/nomo-forum-app.git
+git clone https://github.com/faiz-muttaqin/nomo-forum-app.git
 cd nomo-forum-app
 ```
 
@@ -28,59 +37,119 @@ cd nomo-forum-app
 pnpm install
 ```
 
-3. **Jalankan aplikasi dalam mode development**
+3. **Run the application in development mode**
 
 ```bash
 pnpm run dev
 ```
 
-4. Buka browser ke alamat yang tertera di terminal (biasanya `http://localhost:5173`)
+4. Open your browser to the address shown in the terminal (usually `http://localhost:5173`)
 
-## CI/CD & Deployment
+## 📦 Available Scripts
 
-- **GitHub Actions**: Otomatis menjalankan test unit, e2e, dan lint setiap ada pull request ke branch utama. Jika test gagal, merge akan diblokir.
-- **Vercel**: Deployment otomatis ke Vercel setiap ada perubahan di branch utama. Hasil build dapat diakses secara publik.
+```bash
+pnpm run dev         # Start development server
+pnpm run build       # Build for production
+pnpm run preview     # Preview production build
+pnpm run test        # Run unit tests
+pnpm run e2e         # Run end-to-end tests
+pnpm run lint        # Run ESLint
+pnpm run storybook   # Start Storybook
+```
 
-## Library Tambahan
+## 🔄 CI/CD & Deployment
 
-- **Storybook**: Digunakan untuk dokumentasi dan preview komponen UI secara interaktif. Jalankan dengan `pnpm run storybook`.
-- **Framer Motion**: Digunakan untuk animasi pada komponen, seperti tombol yang membesar saat hover dan mengecil saat ditekan.
+- **GitHub Actions**: Automatically runs unit tests, e2e tests, and linting on every pull request to the main branch. Failed tests will block merging.
+- **Vercel**: Automatic deployment to Vercel on every change to the main branch. Build results are publicly accessible.
 
-## Fitur Detail
+## 🛠️ Tech Stack
 
-### Autentikasi
+- **Frontend Framework**: React 18 with Vite
+- **State Management**: Redux Toolkit
+- **Styling**: Bootstrap 5.3 + Custom CSS
+- **Animations**: Framer Motion
+- **Routing**: React Router DOM v7
+- **Testing**: Vitest + Cypress
+- **UI Documentation**: Storybook
+- **Backend API**: Custom Go API (separate repository)
 
-- Register dengan nama, email, dan password
-- Login dengan email dan password
-- Otomatis menyimpan sesi login
+## 📚 Additional Libraries
 
-### Thread
+- **Storybook**: Used for interactive UI component documentation and preview. Run with `pnpm run storybook`.
+- **Framer Motion**: Used for component animations, such as buttons that scale on hover and press.
+- **React Icons**: Icon library for consistent iconography.
+- **HTML React Parser**: For parsing and rendering HTML content safely.
 
-- Melihat daftar thread tanpa perlu login
-- Setiap thread menampilkan judul, potongan konten, waktu pembuatan, jumlah komentar, dan info pembuat
-- Membuat thread baru (memerlukan login)
-- Detail thread menampilkan judul, konten lengkap, waktu pembuatan, dan info pembuat
+## 🎯 Feature Details
 
-### Komentar
+### Authentication
 
-- Melihat semua komentar pada thread
-- Menambahkan komentar baru (memerlukan login)
-- Komentar menampilkan konten, waktu pembuatan, dan info pembuat
+- Register with name, email, and password
+- Login with email and password
+- Automatic session persistence
+- Secure token-based authentication
 
+### Threads
 
-## Struktur Folder
+- View thread list without login
+- Each thread displays title, content preview, creation time, comment count, and author info
+- Create new thread (requires login)
+- Thread detail shows full title, complete content, creation time, and author info
+- Upvote/downvote threads
+- Category tags with hashtags
 
-- `src/` : kode sumber utama React
-  - `components/` : komponen UI reusable (AuthModal, BtnMotion, Thread, dsb)
-  - `pages/` : halaman aplikasi (HomePage, LeaderboardPage, UserDetail)
-  - `states/` : manajemen state aplikasi (Redux Toolkit, async action, reducer, dsb)
-  - `contexts/` : context global (ThemeContext, LanguageContext)
-  - `stories/` : file Storybook untuk dokumentasi dan preview komponen
-  - `styles/` : file CSS custom
-  - `utils/` : utilitas (API, local data, helper)
-- `public/` : aset publik (icon, gambar, dsb)
-- `index.html` : root HTML aplikasi
+### Comments
+
+- View all comments on a thread
+- Add new comments (requires login)
+- Comment displays content, creation time, and author info
+- Upvote/downvote comments
+- Real-time optimistic updates
+
+### Theme & Localization
+
+- Light/Dark theme toggle with persistent preference
+- Multi-language support (Indonesian/English)
+- Smooth theme transitions
+- Modern glassmorphism design
+
+### Leaderboard
+
+- View top contributors
+- Medal badges for top 3 users (🥇🥈🥉)
+- Score tracking and rankings
+- User search functionality
+
+## 📁 Folder Structure
+
+- `src/` : Main React source code
+  - `components/` : Reusable UI components (AuthModal, BtnMotion, ThreadItem, etc.)
+  - `pages/` : Application pages (HomePage, LeaderboardPage, UserDetail)
+  - `states/` : Application state management (Redux Toolkit, async actions, reducers, etc.)
+  - `contexts/` : Global contexts (ThemeContext, LanguageContext)
+  - `stories/` : Storybook files for component documentation and preview
+  - `styles/` : Custom CSS files
+  - `utils/` : Utilities (API, local data, helpers)
+- `public/` : Public assets (icons, images, etc.)
+- `index.html` : Root HTML application
+
+## 🎨 Design Features
+
+- **Glassmorphism UI**: Modern card designs with backdrop blur effects
+- **Smooth Animations**: All interactions include smooth transitions
+- **Responsive Layout**: Optimized for mobile, tablet, and desktop
+- **Mobile Bottom Navigation**: Easy thumb-reach navigation on mobile devices
+- **Custom Scrollbar**: Styled scrollbar matching the theme
+- **Gradient Backgrounds**: Beautiful gradient backgrounds for both themes
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open source and available under the MIT License.
 
 ---
 
-Dibuat oleh Faiz Muttaqin untuk submission Di coding.
+**Created by Faiz Muttaqin** • [Portfolio](https://faizmuttaqin.com) • [GitHub](https://github.com/faiz-muttaqin)
